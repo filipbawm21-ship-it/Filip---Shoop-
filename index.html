@@ -1,2 +1,1343 @@
-# Filip---Shoop-
-Filip Shoop - premium Trading 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filip Shoop - Premium Trading Solutions & SMC Indicators</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#080B10',
+                        brandCard: '#0F1622',
+                        brandSurface: '#162032',
+                        brandAccent: '#00FF88',
+                        brandCyan: '#00E5FF',
+                        brandGold: '#FFD700',
+                        brandRose: '#FF2A6D'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #080B10;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Styles */
+        .glass-panel {
+            background: rgba(15, 22, 34, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(22, 32, 50, 0.6) 0%, rgba(15, 22, 34, 0.8) 100%);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.15);
+        }
+
+        /* Glowing accents */
+        .glow-accent {
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+        }
+
+        .text-glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080B10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FF88;
+        }
+
+        /* Gradient animations */
+        .gradient-text {
+            background: linear-gradient(135deg, #00FF88 0%, #00E5FF 50%, #FFD700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brandAccent selection:text-slate-950">
+
+    <!-- Live Market Ticker Header -->
+    <div class="bg-slate-950 border-b border-slate-800 text-xs py-2 px-4 z-50">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-slate-400">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span class="font-bold text-emerald-400 tracking-wider">LIVE MARKETS:</span>
+            </div>
+            
+            <div class="flex items-center gap-6 overflow-x-auto no-scrollbar py-0.5 text-xs font-mono">
+                <div class="flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="text-slate-400">BTC/USD:</span>
+                    <span id="ticker-btc" class="font-bold text-emerald-400">$89,450.20</span>
+                    <span class="text-[10px] text-emerald-500 bg-emerald-500/10 px-1 rounded">+2.4%</span>
+                </div>
+                <div class="flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="text-slate-400">XAU/USD:</span>
+                    <span id="ticker-gold" class="font-bold text-emerald-400">$2,738.50</span>
+                    <span class="text-[10px] text-emerald-500 bg-emerald-500/10 px-1 rounded">+0.8%</span>
+                </div>
+                <div class="flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="text-slate-400">EUR/USD:</span>
+                    <span id="ticker-eur" class="font-bold text-rose-400">1.0824</span>
+                    <span class="text-[10px] text-rose-500 bg-rose-500/10 px-1 rounded">-0.1%</span>
+                </div>
+                <div class="flex items-center gap-1.5 whitespace-nowrap">
+                    <span class="text-slate-400">ETH/USD:</span>
+                    <span id="ticker-eth" class="font-bold text-emerald-400">$3,420.10</span>
+                    <span class="text-[10px] text-emerald-500 bg-emerald-500/10 px-1 rounded">+3.1%</span>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center gap-4 text-slate-400 text-[11px]">
+                <span><i class="fa-solid fa-phone text-emerald-400"></i> bKash/Nagad: <b>01848433307</b></span>
+                <span>|</span>
+                <button onclick="toggleLanguage()" class="bg-slate-900 border border-slate-700 px-2.5 py-0.5 rounded text-slate-300 font-bold hover:text-brandAccent">
+                    <i class="fa-solid fa-globe mr-1"></i> <span id="lang-indicator">BN / EN</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dynamic Navigation Bar -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchMainTab('home')">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brandAccent via-brandCyan to-brandGold p-[2px] shadow-lg shadow-emerald-500/20">
+                        <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                            <i class="fa-solid fa-chart-line text-brandAccent text-xl"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-wider text-white flex items-center gap-1 font-mono">
+                            FILIP<span class="text-brandAccent">SHOOP</span>
+                        </span>
+                        <span class="block text-[10px] text-amber-400 font-bold tracking-widest uppercase">Trading Solutions & SMC</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-6 text-xs font-bold uppercase tracking-wider">
+                    <button onclick="switchMainTab('home')" class="nav-btn text-slate-300 hover:text-brandAccent transition-colors">Home</button>
+                    <a href="#charts-sec" class="text-slate-300 hover:text-brandAccent transition-colors">Live Charts</a>
+                    <a href="#smc-sec" class="text-slate-300 hover:text-brandAccent transition-colors">SMC Indicators</a>
+                    <a href="#products-sec" class="text-slate-300 hover:text-brandAccent transition-colors">Catalog</a>
+                    <a href="#calculator-sec" class="text-slate-300 hover:text-brandAccent transition-colors">Risk Calculator</a>
+                    <a href="#faq-sec" class="text-slate-300 hover:text-brandAccent transition-colors">FAQ</a>
+                </nav>
+
+                <!-- Action Controls -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openOrderTracker()" class="hidden sm:flex items-center gap-1.5 bg-slate-900 border border-slate-700/80 hover:border-amber-400 text-amber-400 px-3 py-2 rounded-xl text-xs font-bold transition-all">
+                        <i class="fa-solid fa-magnifying-glass"></i> <span lang-key="trackOrder">Track Order</span>
+                    </button>
+
+                    <button onclick="openAdminPortal()" class="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700/80 hover:border-brandAccent px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-shield text-emerald-400"></i> Admin
+                    </button>
+
+                    <button onclick="toggleCartDrawer()" class="relative bg-slate-900 border border-slate-700/80 p-2.5 rounded-xl text-slate-200 hover:border-brandAccent transition-all">
+                        <i class="fa-solid fa-cart-shopping text-base"></i>
+                        <span id="cart-counter" class="absolute -top-2 -right-2 bg-brandAccent text-slate-950 text-xs font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-950">0</span>
+                    </button>
+
+                    <button onclick="toggleMobileMenu()" class="md:hidden bg-slate-900 p-2.5 rounded-xl border border-slate-800 text-slate-300">
+                        <i class="fa-solid fa-bars text-base"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950 border-b border-slate-800 px-4 py-4 space-y-3 text-sm">
+            <button onclick="switchMainTab('home'); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-300 font-semibold">
+                <i class="fa-solid fa-house text-emerald-400 mr-2"></i> Home
+            </button>
+            <a href="#charts-sec" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-300 font-semibold">
+                <i class="fa-solid fa-chart-candlestick text-cyan-400 mr-2"></i> Live Trading Charts
+            </a>
+            <a href="#smc-sec" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-300 font-semibold">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-2"></i> SMC Indicators
+            </a>
+            <a href="#calculator-sec" onclick="toggleMobileMenu()" class="block py-2 px-3 rounded-lg hover:bg-slate-900 text-slate-300 font-semibold">
+                <i class="fa-solid fa-calculator text-rose-400 mr-2"></i> Position Calculator
+            </a>
+            <button onclick="openOrderTracker(); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg hover:bg-slate-900 text-amber-400 font-semibold">
+                <i class="fa-solid fa-receipt mr-2"></i> Track Order Status
+            </button>
+            <button onclick="openAdminPortal(); toggleMobileMenu();" class="block w-full text-left py-2 px-3 rounded-lg bg-emerald-500/10 text-emerald-400 font-bold border border-emerald-500/30">
+                <i class="fa-solid fa-user-shield mr-2"></i> Admin Portal
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT WRAPPER -->
+    <main id="main-content" class="flex-grow">
+        
+        <!-- HERO BANNER SECTION -->
+        <section class="relative py-20 lg:py-28 overflow-hidden border-b border-slate-800/80 bg-gradient-to-b from-brandDark via-slate-950 to-brandDark">
+            <!-- Background Radial Glows -->
+            <div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none"></div>
+            <div class="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-extrabold uppercase tracking-widest mb-6 glow-accent">
+                    <i class="fa-solid fa-shield-halved text-sm"></i> Official Platform by Filip Bawm
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight mb-6">
+                    Master the Markets with <br>
+                    <span class="gradient-text">Filipbawm SMC Indicators</span>
+                </h1>
+
+                <p class="max-w-3xl mx-auto text-slate-300 text-base sm:text-xl mb-10 leading-relaxed font-normal">
+                    Precision Smart Money Concept (SMC) TradingView scripts, automated CHoCH/BOS market structure alerts, 85%+ win-rate Forex & Crypto VIP signals, and 1-on-1 coaching.
+                </p>
+
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 text-center">
+                        <span class="text-3xl font-black text-brandAccent font-mono">92.4%</span>
+                        <span class="block text-xs font-semibold text-slate-400 mt-1 uppercase">SMC Signal Precision</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 text-center">
+                        <span class="text-3xl font-black text-brandCyan font-mono">1,500+</span>
+                        <span class="block text-xs font-semibold text-slate-400 mt-1 uppercase">Active VIP Members</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 text-center">
+                        <span class="text-3xl font-black text-brandGold font-mono">Instant</span>
+                        <span class="block text-xs font-semibold text-slate-400 mt-1 uppercase">TradingView Access</span>
+                    </div>
+                    <div class="glass-panel p-5 rounded-2xl border border-slate-800 text-center">
+                        <span class="text-3xl font-black text-rose-400 font-mono">24/7</span>
+                        <span class="block text-xs font-semibold text-slate-400 mt-1 uppercase">bKash & Nagad Support</span>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#smc-sec" class="bg-brandAccent hover:bg-emerald-400 text-slate-950 font-black px-8 py-4 rounded-xl shadow-xl shadow-emerald-500/20 transition-all text-sm uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i> Get SMC Indicator
+                    </a>
+                    <a href="#charts-sec" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-4 rounded-xl border border-slate-700 transition-all text-sm uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-chart-candlestick text-cyan-400 text-lg"></i> Launch Interactive Chart
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE TRADINGVIEW CHART SECTION -->
+        <section id="charts-sec" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-brandCyan text-xs font-bold uppercase tracking-widest mb-1">
+                        <i class="fa-solid fa-chart-line"></i> Real-time Technical Analysis
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Live Market Workspace</h2>
+                    <p class="text-slate-400 text-sm mt-1">Test indicators and monitor live market price action directly inside Filip Shoop workspace.</p>
+                </div>
+
+                <!-- Asset Quick Switcher Buttons -->
+                <div class="flex flex-wrap items-center gap-2 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                    <button onclick="changeChartSymbol('INDEX:BTCUSD')" class="chart-symbol-btn active bg-brandAccent text-slate-950 font-extrabold px-3.5 py-1.5 rounded-lg text-xs transition-all">BTC/USD</button>
+                    <button onclick="changeChartSymbol('OANDA:XAUUSD')" class="chart-symbol-btn bg-slate-900 text-slate-300 hover:text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all">Gold (XAU)</button>
+                    <button onclick="changeChartSymbol('FX:EURUSD')" class="chart-symbol-btn bg-slate-900 text-slate-300 hover:text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all">EUR/USD</button>
+                    <button onclick="changeChartSymbol('INDEX:ETHUSD')" class="chart-symbol-btn bg-slate-900 text-slate-300 hover:text-white font-bold px-3.5 py-1.5 rounded-lg text-xs transition-all">ETH/USD</button>
+                </div>
+            </div>
+
+            <!-- TradingView Embedded Container -->
+            <div class="glass-panel p-3 rounded-2xl border border-slate-800 relative shadow-2xl">
+                <div class="w-full h-[550px] rounded-xl overflow-hidden" id="tv-chart-wrapper">
+                    <!-- Dynamic TradingView Widget Inserted via JS -->
+                </div>
+                <div class="p-3 bg-slate-950/80 rounded-b-xl flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 border-t border-slate-800">
+                    <span class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-brandAccent"></i> Note: For custom SMC Buy/Sell signals overlaid on your personal chart, purchase access below.
+                    </span>
+                    <a href="https://wa.me/8801848433307" target="_blank" class="text-emerald-400 font-bold hover:underline">
+                        Need Custom Setup Assistance? Chat on WhatsApp <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SMC INDICATOR FEATURE SPOTLIGHT -->
+        <section id="smc-sec" class="py-16 bg-slate-950/80 border-y border-slate-800/80 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase mb-4">
+                            <i class="fa-solid fa-crown"></i> Flagship PineScript Tool
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight mb-6">
+                            Filipbawm SMC <br>
+                            <span class="text-brandAccent">Ultimate Indicator</span>
+                        </h2>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                            Designed specifically for Price Action & Smart Money Concept traders. Automatically identifies Institutional Order Blocks, CHoCH (Change of Character), BOS (Break of Structure), Liquidity Sweeps, and gives automated Buy/Sell signals on 1m, 5m, 15m, and 1h timeframes.
+                        </p>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm shrink-0">
+                                    <i class="fa-solid fa-bullseye"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">Automated Buy / Sell Signal Markers</h4>
+                                    <p class="text-xs text-slate-400">Non-repaint signals based on real-time order block validation and institutional imbalance filling.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-sm shrink-0">
+                                    <i class="fa-solid fa-cubes-stacked"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">CHoCH & BOS Auto Mapping</h4>
+                                    <p class="text-xs text-slate-400">Never miss market structure shifts. Real-time trend reversal detection with precise price levels.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-sm shrink-0">
+                                    <i class="fa-solid fa-bell"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">TradingView Telegram Webhook Alerts</h4>
+                                    <p class="text-xs text-slate-400">Set mobile push notifications whenever a high probability setup occurs on Gold, Forex, or BTC.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instant Purchase Block -->
+                        <div class="p-5 glass-panel rounded-2xl border border-brandAccent/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <span class="text-xs text-slate-400 block font-semibold">Special Offer Price:</span>
+                                <span class="text-3xl font-black text-white font-mono">৳৩,০০০ <small class="text-xs text-brandAccent font-bold">Lifetime Grant</small></span>
+                            </div>
+                            <button onclick="quickOrderSMC()" class="w-full sm:w-auto bg-brandAccent hover:bg-emerald-400 text-slate-950 font-black px-6 py-3 rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-bolt"></i> Get Instant Access
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Visual Mockup Card -->
+                    <div class="glass-card p-6 rounded-3xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/20 rounded-full blur-2xl"></div>
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <span class="text-xs font-mono font-bold text-slate-300 ml-2">FilipbawmSMC_V2.pine</span>
+                            </div>
+                            <span class="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded uppercase">Active Script</span>
+                        </div>
+
+                        <!-- Simulated Pine Script Signal Screenshot UI -->
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs space-y-3">
+                            <div class="flex justify-between items-center text-slate-400 border-b border-slate-900 pb-2">
+                                <span>SYMBOL: BTCUSD (15m)</span>
+                                <span class="text-emerald-400 font-bold">● BULLISH CHoCH</span>
+                            </div>
+                            <div class="p-3 bg-emerald-950/40 border border-emerald-500/30 rounded-lg">
+                                <span class="bg-emerald-500 text-slate-950 font-black px-2 py-0.5 rounded text-[10px] mr-2">BUY SIGNAL</span>
+                                <span class="text-slate-200">Entry: $83,820.00</span>
+                                <div class="text-[11px] text-slate-400 mt-1">SL: $83,400.00 | TP1: $84,400.00 | TP2: $85,200.00</div>
+                            </div>
+                            <div class="p-3 bg-rose-950/40 border border-rose-500/30 rounded-lg">
+                                <span class="bg-rose-500 text-white font-black px-2 py-0.5 rounded text-[10px] mr-2">SELL SIGNAL</span>
+                                <span class="text-slate-200">Entry: $84,450.00</span>
+                                <div class="text-[11px] text-slate-400 mt-1">SL: $84,800.00 | TP1: $83,800.00 | TP2: $83,200.00</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-check text-emerald-400 mr-1"></i> Works on TradingView Mobile & Web</span>
+                            <span class="font-bold text-amber-400">01848433307</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PRODUCTS CATALOG SECTION -->
+        <section id="products-sec" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+                <div>
+                    <span class="text-xs font-bold text-brandAccent uppercase tracking-widest block mb-1">Store Front</span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white">Products & Trading Services</h2>
+                    <p class="text-slate-400 text-sm mt-1">Select from our verified trading packages and indicator tools.</p>
+                </div>
+
+                <!-- Catalog Filter Tabs -->
+                <div class="flex flex-wrap gap-2" id="catalog-filters">
+                    <button onclick="filterCatalog('all')" class="cat-filter-btn active bg-brandAccent text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all">All Items</button>
+                    <button onclick="filterCatalog('indicators')" class="cat-filter-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition-all">SMC Scripts</button>
+                    <button onclick="filterCatalog('signals')" class="cat-filter-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition-all">VIP Signals</button>
+                    <button onclick="filterCatalog('courses')" class="cat-filter-btn bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-800 font-bold px-4 py-2 rounded-xl text-xs transition-all">Mentorship</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Products injected via JS -->
+            </div>
+        </section>
+
+        <!-- INTERACTIVE TRADING RISK CALCULATOR SECTION -->
+        <section id="calculator-sec" class="py-16 bg-slate-950/60 border-t border-slate-800">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold text-brandCyan uppercase tracking-widest">Free Trader Tool</span>
+                    <h2 class="text-3xl font-black text-white mt-1">Position Size & Risk Calculator</h2>
+                    <p class="text-slate-400 text-sm mt-1">Calculate exact lot size before entering a trade to protect your capital.</p>
+                </div>
+
+                <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    
+                    <!-- Calculator Inputs -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Account Balance ($ USD)</label>
+                            <input type="number" id="calc-balance" value="1000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono text-white focus:border-brandAccent focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Risk (%)</label>
+                                <input type="number" id="calc-risk" value="1" step="0.5" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono text-white focus:border-brandAccent focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-300 mb-1">Stop Loss (Pips/Points)</label>
+                                <input type="number" id="calc-sl" value="25" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm font-mono text-white focus:border-brandAccent focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Asset Pair</label>
+                            <select id="calc-pair" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white focus:border-brandAccent focus:outline-none">
+                                <option value="10">EUR/USD, GBP/USD (Standard Forex)</option>
+                                <option value="1">XAU/USD (Gold - 100 oz)</option>
+                                <option value="1">BTC/USD (Crypto)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="calculateRisk()" class="w-full bg-brandCyan hover:bg-cyan-400 text-slate-950 font-black py-3 rounded-xl transition-all text-xs uppercase tracking-wider">
+                            <i class="fa-solid fa-calculator mr-1"></i> Calculate Lot Size
+                        </button>
+                    </div>
+
+                    <!-- Calculator Output Display -->
+                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 space-y-4 text-center md:text-left">
+                        <div class="border-b border-slate-800 pb-3">
+                            <span class="text-xs text-slate-400 font-semibold block">Maximum Cash Risk:</span>
+                            <span id="calc-risk-cash" class="text-2xl font-black text-rose-400 font-mono">$10.00</span>
+                        </div>
+
+                        <div class="border-b border-slate-800 pb-3">
+                            <span class="text-xs text-slate-400 font-semibold block">Recommended Position Size (Lots):</span>
+                            <span id="calc-lot-size" class="text-4xl font-black text-brandAccent font-mono">0.04 Lot</span>
+                        </div>
+
+                        <p class="text-[11px] text-slate-500 italic">
+                            * Note: Always manage your risk strictly. Filip Bawm recommends never risking more than 1-2% per trade.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS & TRUST PROOF -->
+        <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Trader Feedback</span>
+                <h2 class="text-3xl font-black text-white mt-1">What Our VIP Members Say</h2>
+                <p class="text-slate-400 text-sm mt-1">Read reviews from Bangladeshi traders using Filip Bawm SMC tools.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm italic mb-4 leading-relaxed">
+                        "Filipbawm SMC Indicator টা নেওয়ার পর থেকে আমার TradingView chart এ CHoCH আর BOS খোঁজা অনেক সহজ হয়ে গেছে। bKash এ টাকা দেওয়ার পর ১০ মিনিটে এক্সেস পেয়েছি।"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold">SK</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Shohel Khan</h4>
+                            <span class="text-xs text-slate-500">Forex Trader, Dhaka</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm italic mb-4 leading-relaxed">
+                        "VIP Signals VIP Group এ গোল্ড (XAUUSD) ট্রেড এর একুরেসি অনেক ভালো। রিস্ক ম্যানেজমেন্ট সুন্দর করে বুঝিয়ে দেওয়া হয়।"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">MR</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Mahmudur Rahman</h4>
+                            <span class="text-xs text-slate-500">Gold Scalper, Chittagong</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 relative">
+                    <div class="flex items-center gap-1 text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm italic mb-4 leading-relaxed">
+                        "1-on-1 SMC Mentorship কোর্স থেকে আমি Order Block আর Liquidity Sweep সঠিকভাবে চিনতে পেরেছি। ধন্যবাদ ফিলিপ ভাইকে!"
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold">FB</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-white">Farhan Ahmed</h4>
+                            <span class="text-xs text-slate-500">Prop Trader, Sylhet</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ ACCORDION SECTION -->
+        <section id="faq-sec" class="py-16 bg-slate-950/80 border-t border-slate-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black text-white">Frequently Asked Questions</h2>
+                    <p class="text-slate-400 text-sm mt-1">Got questions? Find instant answers below.</p>
+                </div>
+
+                <div class="space-y-3" id="faq-accordion">
+                    <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-4 font-bold text-white flex justify-between items-center text-sm">
+                            <span>How do I receive the TradingView SMC Indicator after payment?</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="hidden p-4 text-xs text-slate-300 border-t border-slate-800/80 bg-slate-950/50 leading-relaxed">
+                            After sending payment via bKash or Nagad (01848433307), submit your Transaction ID and TradingView Username during checkout or on WhatsApp. Filip Bawm will grant "Invite-Only" access directly to your TradingView account within 10-30 minutes.
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-4 font-bold text-white flex justify-between items-center text-sm">
+                            <span>Does the indicator work on TradingView free plan & mobile app?</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="hidden p-4 text-xs text-slate-300 border-t border-slate-800/80 bg-slate-950/50 leading-relaxed">
+                            Yes! You do not need a paid TradingView account. The indicator works smoothly on TradingView Free plan, Android/iOS mobile apps, and Web charts.
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-xl overflow-hidden border border-slate-800">
+                        <button onclick="toggleFaq(this)" class="w-full text-left p-4 font-bold text-white flex justify-between items-center text-sm">
+                            <span>What payment methods are accepted?</span>
+                            <i class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                        </button>
+                        <div class="hidden p-4 text-xs text-slate-300 border-t border-slate-800/80 bg-slate-950/50 leading-relaxed">
+                            We accept bKash Personal and Nagad Personal at <b>01848433307</b>. We also support crypto USDT (TRC20) payments upon direct WhatsApp request.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MAIN CONTENT VIEW: ADMIN PORTAL -->
+    <main id="admin-view" class="hidden flex-grow py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
+            <div>
+                <h1 class="text-3xl font-black text-white flex items-center gap-3">
+                    <i class="fa-solid fa-user-shield text-emerald-400"></i> Filip Shoop Admin Control Center
+                </h1>
+                <p class="text-slate-400 text-sm">Verify bKash/Nagad transactions, grant TradingView access, and update product catalog.</p>
+            </div>
+            <button onclick="switchMainTab('home')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold border border-slate-700">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Exit Admin
+            </button>
+        </div>
+
+        <!-- Admin Stats Bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <span class="text-slate-400 text-xs font-semibold uppercase">Total Store Sales</span>
+                <h3 id="admin-total-rev" class="text-2xl font-black text-brandAccent mt-1 font-mono">৳২৫,৫০0</h3>
+                <span class="text-[11px] text-emerald-400 mt-1 block"><i class="fa-solid fa-chart-line"></i> Verified Transactions</span>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <span class="text-slate-400 text-xs font-semibold uppercase">Pending Orders</span>
+                <h3 id="admin-pending-count" class="text-2xl font-black text-amber-400 mt-1 font-mono">2 Pending</h3>
+                <span class="text-[11px] text-amber-400 mt-1 block">Awaiting TV Access Grant</span>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <span class="text-slate-400 text-xs font-semibold uppercase">Active Indicators</span>
+                <h3 id="admin-product-count" class="text-2xl font-black text-brandCyan mt-1 font-mono">4 Products</h3>
+                <span class="text-[11px] text-slate-400 mt-1 block">Published in Catalog</span>
+            </div>
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800">
+                <span class="text-slate-400 text-xs font-semibold uppercase">Merchant Phone</span>
+                <h3 class="text-lg font-bold text-white mt-1 font-mono">01848433307</h3>
+                <span class="text-[11px] text-emerald-400 mt-1 block">bKash / Nagad Personal</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Add New Product Form -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 lg:col-span-1">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-brandAccent"></i> Add New Product / Script
+                </h3>
+
+                <form id="admin-add-form" onsubmit="handleAdminAddProduct(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Product Name</label>
+                        <input type="text" id="ap-title" required placeholder="e.g. Filipbawm Gold Scalper Bot" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 focus:border-brandAccent focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-300 mb-1">Category</label>
+                            <select id="ap-cat" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 focus:border-brandAccent focus:outline-none">
+                                <option value="indicators">SMC Script</option>
+                                <option value="signals">VIP Signals</option>
+                                <option value="courses">Mentorship</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-300 mb-1">Price (BDT)</label>
+                            <input type="number" id="ap-price" required placeholder="3000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-200 focus:border-brandAccent focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Badge Tag</label>
+                        <input type="text" id="ap-badge" placeholder="BESTSELLER" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 focus:border-brandAccent focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Description</label>
+                        <textarea id="ap-desc" required rows="3" placeholder="Script features and strategy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 focus:border-brandAccent focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brandAccent hover:bg-emerald-400 text-slate-950 font-black py-3 rounded-xl transition-all shadow-md shadow-emerald-500/20 uppercase tracking-wider">
+                        Publish to Store
+                    </button>
+                </form>
+            </div>
+
+            <!-- Orders Table & TV Username Approval System -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 lg:col-span-2">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center justify-between">
+                    <span><i class="fa-solid fa-list-check text-amber-400 mr-2"></i> Orders & TV Access Management</span>
+                    <span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/30">Live Orders</span>
+                </h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 uppercase border-b border-slate-800">
+                            <tr>
+                                <th class="p-3">Order ID</th>
+                                <th class="p-3">Customer</th>
+                                <th class="p-3">TV Username</th>
+                                <th class="p-3">Txn ID</th>
+                                <th class="p-3">Amount</th>
+                                <th class="p-3">Action Grant</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-body" class="divide-y divide-slate-800 font-mono">
+                            <!-- Injected via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SHOPPING CART SLIDING DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm pointer-events-auto" onclick="toggleCartDrawer()"></div>
+
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 pointer-events-auto">
+            <div class="w-screen max-w-md bg-slate-950 border-l border-slate-800 shadow-2xl flex flex-col">
+                
+                <div class="p-5 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brandAccent"></i> Your Shopping Basket
+                    </h3>
+                    <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-white p-2">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div id="cart-items-body" class="flex-grow overflow-y-auto p-5 space-y-4">
+                    <!-- Dynamic cart items -->
+                </div>
+
+                <div class="p-5 bg-slate-900 border-t border-slate-800 space-y-4 text-xs">
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-400">Total Price:</span>
+                        <span id="cart-total-price" class="font-mono font-black text-brandAccent text-xl">৳০</span>
+                    </div>
+
+                    <button id="cart-checkout-btn" onclick="openCheckoutModal()" disabled class="w-full bg-brandAccent hover:bg-emerald-400 disabled:bg-slate-800 disabled:text-slate-600 text-slate-950 font-black py-3.5 rounded-xl transition-all uppercase tracking-wider flex items-center justify-center gap-2">
+                        Checkout with bKash/Nagad <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT & CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl relative">
+            
+            <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white z-10">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <div class="p-6">
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold text-amber-400 uppercase tracking-widest">Instant Auto-Format Order</span>
+                    <h3 class="text-2xl font-black text-white mt-1">bKash / Nagad Checkout</h3>
+                    <p class="text-xs text-slate-400 mt-1">Send payment to Filip Bawm's official personal number</p>
+                </div>
+
+                <!-- Payment Instructions Card -->
+                <div class="bg-slate-950 p-4 rounded-2xl border border-slate-800 mb-6 text-xs space-y-2">
+                    <div class="flex justify-between font-bold text-slate-200">
+                        <span>1. Total Payable Amount:</span>
+                        <span id="checkout-amount-display" class="text-brandAccent font-mono text-base font-extrabold">৳০</span>
+                    </div>
+                    <div class="flex justify-between font-bold text-slate-200">
+                        <span>2. bKash / Nagad Personal Number:</span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-amber-400 font-mono text-sm">01848433307</span>
+                            <button onclick="copyNumber('01848433307')" class="text-slate-400 hover:text-white">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-slate-400 border-t border-slate-800 pt-2">
+                        * টাকা পাঠানোর পর আপনার বিকাশ/নগদ এর <b>Transaction ID (TxnID)</b> এবং <b>TradingView Username</b> নিচে লিখুন।
+                    </p>
+                </div>
+
+                <!-- Checkout Input Form -->
+                <form id="checkout-form" onsubmit="handleCheckoutFormSubmit(event)" class="space-y-4 text-xs">
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Your Full Name</label>
+                        <input type="text" id="cust-name" required placeholder="e.g. Filip Bawm" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:border-brandAccent focus:outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-semibold text-slate-300 mb-1">Phone / WhatsApp</label>
+                            <input type="tel" id="cust-phone" required placeholder="01848433307" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 focus:border-brandAccent focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-300 mb-1">TradingView Username</label>
+                            <input type="text" id="cust-tvuser" required placeholder="e.g. filip_trader" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 font-mono focus:border-brandAccent focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold text-slate-300 mb-1">Payment Method & TxnID</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <select id="cust-method" class="bg-slate-950 border border-slate-800 rounded-xl px-2 py-2.5 text-slate-200 focus:border-brandAccent focus:outline-none">
+                                <option value="bKash">bKash</option>
+                                <option value="Nagad">Nagad</option>
+                            </select>
+                            <input type="text" id="cust-txnid" required placeholder="TxnID e.g. BAX8923KL" class="col-span-2 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-200 font-mono focus:border-brandAccent focus:outline-none">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brandAccent hover:bg-emerald-400 text-slate-950 font-black py-3.5 rounded-xl shadow-lg shadow-emerald-500/20 transition-all uppercase tracking-wider flex items-center justify-center gap-2 text-xs">
+                        <i class="fa-solid fa-paper-plane"></i> Confirm Order & Submit
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER TRACKER MODAL -->
+    <div id="tracker-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md p-6 relative">
+            <button onclick="closeOrderTracker()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+
+            <h3 class="text-xl font-black text-white text-center mb-2">Track Order Access Status</h3>
+            <p class="text-xs text-slate-400 text-center mb-6">Enter your Order ID or Transaction ID to check TradingView activation.</p>
+
+            <div class="space-y-4">
+                <input type="text" id="tracker-input" placeholder="e.g. FS-9042 or TxnID" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm font-mono text-white text-center focus:border-brandAccent focus:outline-none">
+                <button onclick="checkOrderStatus()" class="w-full bg-brandCyan hover:bg-cyan-400 text-slate-950 font-bold py-3 rounded-xl text-xs uppercase tracking-wider">
+                    Check Status
+                </button>
+
+                <div id="tracker-result" class="hidden p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs text-center">
+                    <!-- Injected status -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER SECTION -->
+    <footer class="bg-slate-950 border-t border-slate-800 text-slate-400 text-xs py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-chart-line text-brandAccent text-xl"></i>
+                        <span class="text-lg font-black text-white font-mono">FILIP<span class="text-brandAccent">SHOOP</span></span>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed mb-4">
+                        Premier Trading Solutions platform in Bangladesh. Offering high-probability SMC indicators, VIP Forex & Gold signals, and 1-on-1 mentorship.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-3 uppercase tracking-wider">Quick Navigation</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#charts-sec" class="hover:text-brandAccent">Live Trading Charts</a></li>
+                        <li><a href="#smc-sec" class="hover:text-brandAccent">Filipbawm SMC Script</a></li>
+                        <li><a href="#products-sec" class="hover:text-brandAccent">VIP Signal Services</a></li>
+                        <li><a href="#calculator-sec" class="hover:text-brandAccent">Position Calculator</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-3 uppercase tracking-wider">Direct Contact</h4>
+                    <ul class="space-y-2 text-slate-300 font-mono">
+                        <li><i class="fa-brands fa-whatsapp text-emerald-400 mr-2"></i> 01848433307</li>
+                        <li><i class="fa-solid fa-envelope text-yellow-400 mr-2"></i> filipbawm21@gmail.com</li>
+                        <li><i class="fa-brands fa-facebook text-blue-500 mr-2"></i> Filip Bawm</li>
+                        <li><i class="fa-solid fa-location-dot text-rose-400 mr-2"></i> Bangladesh</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-3 uppercase tracking-wider">Accepted Payments</h4>
+                    <div class="flex gap-2 mb-4">
+                        <span class="bg-pink-950 border border-pink-500/30 text-pink-400 font-bold px-3 py-1 rounded">bKash</span>
+                        <span class="bg-orange-950 border border-orange-500/30 text-orange-400 font-bold px-3 py-1 rounded">Nagad</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500">Merchant Personal: <b>01848433307</b></p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800/80 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500">
+                <p>&copy; 2026 Filip Shoop (Owner: Filip Bawm). All rights reserved.</p>
+                <div class="flex gap-4 text-lg">
+                    <a href="https://wa.me/8801848433307" target="_blank" class="hover:text-brandAccent"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="mailto:filipbawm21@gmail.com" class="hover:text-brandAccent"><i class="fa-solid fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Default Store Products
+        let products = [
+            {
+                id: 'prod-smc',
+                title: 'Filipbawm SMC Ultimate Indicator',
+                category: 'indicators',
+                price: 3000,
+                badge: 'BEST SELLER',
+                desc: 'Automated Buy/Sell signals, CHoCH, BOS, Order Blocks, and Liquidity Grab alerts directly on your TradingView chart.',
+                features: ['Invite-Only Script Access', 'Works on Free TradingView', 'Non-repaint Buy/Sell Markers', 'Telegram Webhook Ready']
+            },
+            {
+                id: 'prod-sig-1m',
+                title: 'Filip Bawm VIP Trading Signals (Monthly)',
+                category: 'signals',
+                price: 2000,
+                badge: '85%+ ACCURACY',
+                desc: '3-5 Daily High Probability Forex, Gold (XAUUSD), and Crypto signals with TP/SL via Telegram.',
+                features: ['Daily Forex & Gold Trades', 'Risk-Reward 1:2 / 1:3 setups', 'Live Market Updates', '24/7 VIP Support']
+            },
+            {
+                id: 'prod-course',
+                title: 'Master SMC & Price Action Mentorship',
+                category: 'courses',
+                price: 5000,
+                badge: 'POPULAR',
+                desc: 'Complete 1-on-1 coaching covering Smart Money Concepts, Order Block Validation, and Liquidity Strategy.',
+                features: ['1-on-1 Live Zoom Sessions', 'Complete Video Library', 'PDF Cheat Sheets', 'Direct Support from Filip Bawm']
+            },
+            {
+                id: 'prod-dash',
+                title: 'Multi-Timeframe Trend Dashboard Script',
+                category: 'indicators',
+                price: 2500,
+                badge: 'PRO TOOL',
+                desc: 'TradingView panel script showing real-time trend confirmation across 1m, 15m, 1h, and 4h charts.',
+                features: ['Instant Confluence Filter', 'Gold & BTC Optimized', 'Lifetime License', 'Easy Installation']
+            }
+        ];
+
+        // Simulated Orders Database
+        let orders = [
+            { id: 'FS-9041', name: 'Tanvir Ahmed', phone: '01712345678', tvuser: 'tanvir_trader', txn: 'BLX893201', amount: '৳৩,০০০', status: 'Approved' },
+            { id: 'FS-9042', name: 'Shohel Hossain', phone: '01898765432', tvuser: 'shohel_smc', txn: 'NAG772391', amount: '৳২,০০০', status: 'Pending' }
+        ];
+
+        let cart = [];
+        let currentChartSymbol = 'INDEX:BTCUSD';
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTradingViewWidget(currentChartSymbol);
+            renderCatalog('all');
+            renderAdminOrders();
+            simulateLiveTicker();
+        });
+
+        // Switch main tab (Home / Admin)
+        function switchMainTab(tabName) {
+            const mainContent = document.getElementById('main-content');
+            const adminView = document.getElementById('admin-view');
+
+            if (tabName === 'admin') {
+                mainContent.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                adminView.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Render TradingView Chart Widget
+        function renderTradingViewWidget(symbol) {
+            const wrapper = document.getElementById('tv-chart-wrapper');
+            wrapper.innerHTML = `<div id="tradingview_widget_element" style="height:100%;width:100%;"></div>`;
+
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://s3.tradingview.com/tv.js';
+            script.onload = () => {
+                new TradingView.widget({
+                    "autosize": true,
+                    "symbol": symbol,
+                    "interval": "15",
+                    "timezone": "Etc/UTC",
+                    "theme": "dark",
+                    "style": "1",
+                    "locale": "en",
+                    "toolbar_bg": "#080B10",
+                    "enable_publishing": false,
+                    "allow_symbol_change": true,
+                    "container_id": "tradingview_widget_element"
+                });
+            };
+            document.head.appendChild(script);
+        }
+
+        function changeChartSymbol(symbol) {
+            currentChartSymbol = symbol;
+            document.querySelectorAll('.chart-symbol-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-brandAccent', 'text-slate-950');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-900', 'text-slate-300');
+            event.target.classList.add('active', 'bg-brandAccent', 'text-slate-950');
+            renderTradingViewWidget(symbol);
+        }
+
+        function renderCatalog(categoryFilter = 'all') {
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = '';
+
+            const items = categoryFilter === 'all' ? products : products.filter(p => p.category === categoryFilter);
+
+            items.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "glass-card p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 group";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">${p.badge}</span>
+                            <span class="text-xs text-slate-500 font-mono uppercase">${p.category}</span>
+                        </div>
+                        <h3 class="text-xl font-black text-white group-hover:text-brandAccent transition-colors mb-2">${p.title}</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed mb-6">${p.desc}</p>
+                        
+                        <div class="space-y-2 mb-6 border-t border-b border-slate-800/80 py-4 text-xs text-slate-300">
+                            ${p.features.map(f => `<div class="flex items-center gap-2"><i class="fa-solid fa-check text-brandAccent"></i> ${f}</div>`).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-baseline gap-1 mb-4">
+                            <span class="text-3xl font-black text-white font-mono">৳${p.price.toLocaleString()}</span>
+                            <span class="text-xs text-slate-500">BDT</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="addToCart('${p.id}')" class="bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold py-2.5 rounded-xl text-xs border border-slate-700 transition-all">
+                                <i class="fa-solid fa-cart-plus mr-1"></i> Add Basket
+                            </button>
+                            <button onclick="buyNow('${p.id}')" class="bg-brandAccent hover:bg-emerald-400 text-slate-950 font-black py-2.5 rounded-xl text-xs transition-all shadow-md shadow-emerald-500/10">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCatalog(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brandAccent', 'text-slate-950');
+                btn.classList.add('bg-slate-900', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-900', 'text-slate-300');
+            event.target.classList.add('bg-brandAccent', 'text-slate-950');
+            renderCatalog(cat);
+        }
+
+        function addToCart(prodId) {
+            const product = products.find(p => p.id === prodId);
+            if (!product) return;
+
+            const existing = cart.find(i => i.id === prodId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            toggleCartDrawer(true);
+        }
+
+        function quickOrderSMC() {
+            addToCart('prod-smc');
+            openCheckoutModal();
+        }
+
+        function buyNow(prodId) {
+            addToCart(prodId);
+            openCheckoutModal();
+        }
+
+        function updateCartUI() {
+            const counter = document.getElementById('cart-counter');
+            const body = document.getElementById('cart-items-body');
+            const totalEl = document.getElementById('cart-total-price');
+            const checkoutBtn = document.getElementById('cart-checkout-btn');
+
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            counter.innerText = totalQty;
+
+            if (cart.length === 0) {
+                body.innerHTML = `<div class="text-center py-12 text-slate-500 text-xs">Basket is empty.</div>`;
+                totalEl.innerText = '৳০';
+                checkoutBtn.disabled = true;
+                return;
+            }
+
+            let grandTotal = 0;
+            body.innerHTML = '';
+
+            cart.forEach(item => {
+                const total = item.price * item.qty;
+                grandTotal += total;
+
+                const row = document.createElement('div');
+                row.className = "bg-slate-900 p-3.5 rounded-xl border border-slate-800 flex items-center justify-between text-xs";
+                row.innerHTML = `
+                    <div>
+                        <h4 class="font-bold text-white">${item.title}</h4>
+                        <span class="text-brandAccent font-mono">৳${item.price.toLocaleString()} x ${item.qty}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 bg-slate-800 text-white rounded font-bold">-</button>
+                        <span class="font-bold text-white">${item.qty}</span>
+                        <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 bg-slate-800 text-white rounded font-bold">+</button>
+                    </div>
+                `;
+                body.appendChild(row);
+            });
+
+            totalEl.innerText = `৳${grandTotal.toLocaleString()}`;
+            checkoutBtn.disabled = false;
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function toggleCartDrawer(open = null) {
+            const drawer = document.getElementById('cart-drawer');
+            if (open === true) {
+                drawer.classList.remove('opacity-0', 'pointer-events-none');
+            } else if (open === false) {
+                drawer.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.toggle('opacity-0');
+                drawer.classList.toggle('pointer-events-none');
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        function openCheckoutModal() {
+            toggleCartDrawer(false);
+            const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('checkout-amount-display').innerText = `৳${grandTotal.toLocaleString()}`;
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function handleCheckoutFormSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('cust-name').value;
+            const phone = document.getElementById('cust-phone').value;
+            const tvuser = document.getElementById('cust-tvuser').value;
+            const method = document.getElementById('cust-method').value;
+            const txnid = document.getElementById('cust-txnid').value;
+            const grandTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            const orderId = 'FS-' + Math.floor(1000 + Math.random() * 9000);
+
+            orders.unshift({
+                id: orderId,
+                name: name,
+                phone: phone,
+                tvuser: tvuser,
+                txn: txnid,
+                amount: `৳${grandTotal.toLocaleString()}`,
+                status: 'Pending'
+            });
+
+            renderAdminOrders();
+
+            // Format WhatsApp Message
+            const itemsText = cart.map(i => `${i.title} (${i.qty}x)`).join(', ');
+            const waText = `Hello Filip Bawm! I made a payment on Filip Shoop.%0A%0A*Order ID:* ${orderId}%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*TradingView User:* ${tvuser}%0A*Method:* ${method}%0A*TxnID:* ${txnid}%0A*Total Paid:* ৳${grandTotal.toLocaleString()}%0A*Products:* ${itemsText}`;
+
+            closeCheckoutModal();
+
+            // Redirect to WhatsApp directly
+            window.open(`https://wa.me/8801848433307?text=${waText}`, '_blank');
+
+            cart = [];
+            updateCartUI();
+        }
+
+        function calculateRisk() {
+            const balance = parseFloat(document.getElementById('calc-balance').value) || 1000;
+            const riskPct = parseFloat(document.getElementById('calc-risk').value) || 1;
+            const slPips = parseFloat(document.getElementById('calc-sl').value) || 25;
+
+            const cashRisk = (balance * (riskPct / 100));
+            const lotSize = (cashRisk / (slPips * 10)).toFixed(2);
+
+            document.getElementById('calc-risk-cash').innerText = `$${cashRisk.toFixed(2)}`;
+            document.getElementById('calc-lot-size').innerText = `${lotSize} Lot`;
+        }
+
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            content.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        function copyNumber(text) {
+            navigator.clipboard.writeText(text);
+            alert('Copied bKash/Nagad Number: ' + text);
+        }
+
+        function openOrderTracker() {
+            document.getElementById('tracker-modal').classList.remove('hidden');
+        }
+
+        function closeOrderTracker() {
+            document.getElementById('tracker-modal').classList.add('hidden');
+        }
+
+        function checkOrderStatus() {
+            const query = document.getElementById('tracker-input').value.trim();
+            const res = document.getElementById('tracker-result');
+            
+            const match = orders.find(o => o.id.toLowerCase() === query.toLowerCase() || o.txn.toLowerCase() === query.toLowerCase());
+
+            res.classList.remove('hidden');
+            if (match) {
+                res.innerHTML = `
+                    <span class="text-white font-bold block mb-1">Order ID: ${match.id}</span>
+                    <span class="text-slate-400 block">TradingView Username: <b class="text-white">${match.tvuser}</b></span>
+                    <span class="mt-2 inline-block px-3 py-1 rounded-full font-bold ${match.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">
+                        Status: ${match.status}
+                    </span>
+                `;
+            } else {
+                res.innerHTML = `<span class="text-rose-400 font-bold">No matching transaction or order found.</span>`;
+            }
+        }
+
+        function openAdminPortal() {
+            const pass = prompt("Enter Admin Password (Default: 1234):");
+            if (pass === "1234") {
+                switchMainTab('admin');
+            } else if (pass !== null) {
+                alert("Incorrect Admin Password!");
+            }
+        }
+
+        function handleAdminAddProduct(e) {
+            e.preventDefault();
+            const title = document.getElementById('ap-title').value;
+            const cat = document.getElementById('ap-cat').value;
+            const price = parseFloat(document.getElementById('ap-price').value);
+            const badge = document.getElementById('ap-badge').value || 'PREMIUM';
+            const desc = document.getElementById('ap-desc').value;
+
+            products.unshift({
+                id: 'prod-' + Date.now(),
+                title: title,
+                category: cat,
+                price: price,
+                badge: badge.toUpperCase(),
+                desc: desc,
+                features: ['Instant Access', 'Filip Bawm Support']
+            });
+
+            renderCatalog('all');
+            document.getElementById('admin-add-form').reset();
+            alert("New product published successfully!");
+        }
+
+        function renderAdminOrders() {
+            const body = document.getElementById('admin-orders-body');
+            body.innerHTML = '';
+
+            orders.forEach(o => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 text-amber-400 font-bold">${o.id}</td>
+                    <td class="p-3 text-white">${o.name}<br><span class="text-slate-500 text-[10px]">${o.phone}</span></td>
+                    <td class="p-3 text-brandCyan font-bold">${o.tvuser}</td>
+                    <td class="p-3 text-slate-300">${o.txn}</td>
+                    <td class="p-3 text-emerald-400 font-bold">${o.amount}</td>
+                    <td class="p-3">
+                        <button onclick="approveTVAccess('${o.id}')" class="px-2.5 py-1 rounded text-[10px] font-bold ${o.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-amber-500 text-slate-950 hover:bg-emerald-400'}">
+                            ${o.status === 'Approved' ? 'Approved ✓' : 'Grant Access'}
+                        </button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function approveTVAccess(id) {
+            const order = orders.find(o => o.id === id);
+            if (order) {
+                order.status = 'Approved';
+                renderAdminOrders();
+                alert(`Access granted for TradingView user: ${order.tvuser}`);
+            }
+        }
+
+        function simulateLiveTicker() {
+            setInterval(() => {
+                const btc = (89400 + Math.random() * 80).toFixed(2);
+                const gold = (2738 + Math.random() * 2).toFixed(2);
+                document.getElementById('ticker-btc').innerText = `$${btc}`;
+                document.getElementById('ticker-gold').innerText = `$${gold}`;
+            }, 3000);
+        }
+
+        function toggleLanguage() {
+            alert("Language toggled between English & Bengali.");
+        }
+    </script>
+</body>
+</html>
